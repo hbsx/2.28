@@ -1,0 +1,125 @@
+apt update -y  # 升级packages
+
+apt install wget curl sudo vim git -y  # Debian系统比较干净，安装常用的软件
+
+设置一下SWAP
+wget -O box.sh https://raw.githubusercontent.com/BlueSkyXN/SKY-BOX/main/box.sh && chmod +x box.sh && clear && ./box.sh
+
+Docker部署
+wget -qO- get.docker.com | bash
+
+systemctl enable docker  # 设置开机自动启动
+
+非大陆服务器Docker-compose安装
+
+curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+chmod +x /usr/local/bin/docker-compose
+
+systemctl enable docker  # 设置开机自动启动
+
+systemctl restart docker
+
+
+创建frp.toml文件并创建目录
+mkdir /etc/frp
+vim /frp/frps.toml
+
+frps.toml配置
+bindPort = 7000
+auth.method = "token"
+auth.token = "8ad3d1x429a2d"
+
+webServer.addr = "0.0.0.0"
+webServer.port = 7500
+webServer.user = "root"
+webServer.password = "root1"
+
+log.to = "./frps.log"
+log.level = "info"
+log.maxDays = 3
+
+
+拉取镜像
+docker pull snowdreamtech/frps:latest
+启动docker容器
+docker run --restart=always --network host -d -v /etc/frp/frps.toml:/etc/frp/frps.toml --name frps snowdreamtech/frps
+
+
+客户端配置
+
+创建frp.toml文件并创建目录
+mkdir /etc/frp
+vim /frp/frpc.toml
+
+frpc.toml配置
+# frpc.toml
+transport.tls.enable = true        # 从 v0.50.0版本开始，transport.tls.enable的默认值为 true
+serverAddr = "45.42.214.75"
+serverPort = 7000                 # 公网服务端通信端口
+auth.token = "8ad3d1x429a2d"             # 令牌，与公网服务端保持一致
+
+[[proxies]]
+name = "ik"
+type = "tcp"
+localIP = "192.168.1.250"            # 需要暴露的服务的IP
+localPort = 80                # 将本地9000端口的服务暴露在公网的6060端口
+remotePort = 6025                 # 暴露服务的公网入口
+
+[[proxies]]
+name = "op"
+type = "tcp"
+localIP = "192.168.1.240"
+localPort = 80
+remotePort = 6024
+
+
+[[proxies]]
+name = "ql"
+type = "tcp"
+localIP = "192.168.1.200"
+localPort = 5700
+remotePort = 6000
+
+[[proxies]]
+name = "pve"
+type = "tcp"
+localIP = "192.168.1.210"
+localPort = 8006
+remotePort = 6021
+
+[[proxies]]
+name = "qunhui"
+type = "tcp"
+localIP = "192.168.1.100"
+localPort = 5000
+remotePort = 6010
+
+[[proxies]]
+name = "jellyfin"
+type = "tcp"
+localIP = "192.168.1.100"
+localPort = 8096
+remotePort = 6011
+
+[[proxies]]
+name = "clash"
+type = "tcp"
+localIP = "192.168.1.240"
+localPort = 9090
+remotePort = 6090
+
+
+拉取镜像
+docker pull snowdreamtech/frpc:latest
+启动docker容器
+docker run --restart=always --network host -d -v /etc/frp/frpc.toml:/etc/frp/frpc.toml --name frps snowdreamtech/frpc
+
+
+
+
+
+
+
+
+
