@@ -1,0 +1,3 @@
+支持所有协议的后端转换安装命令：
+
+docker run -d --restart=always -p 25500:25500 asdlokj1qpi23/subconverter:latest
