@@ -1,31 +1,31 @@
-apt update -y  # Éı¼¶packages
+apt update -y  # å‡çº§packages
 
-apt install wget curl sudo vim git -y  # DebianÏµÍ³±È½Ï¸É¾»£¬°²×°³£ÓÃµÄÈí¼ş
+apt install wget curl sudo vim git -y  # Debianç³»ç»Ÿæ¯”è¾ƒå¹²å‡€ï¼Œå®‰è£…å¸¸ç”¨çš„è½¯ä»¶
 
-ÉèÖÃÒ»ÏÂSWAP
+è®¾ç½®ä¸€ä¸‹SWAP
 wget -O box.sh https://raw.githubusercontent.com/BlueSkyXN/SKY-BOX/main/box.sh && chmod +x box.sh && clear && ./box.sh
 
-Docker²¿Êğ
+Dockeréƒ¨ç½²
 wget -qO- get.docker.com | bash
 
-systemctl enable docker  # ÉèÖÃ¿ª»ú×Ô¶¯Æô¶¯
+systemctl enable docker  # è®¾ç½®å¼€æœºè‡ªåŠ¨å¯åŠ¨
 
-·Ç´óÂ½·şÎñÆ÷Docker-compose°²×°
+éå¤§é™†æœåŠ¡å™¨Docker-composeå®‰è£…
 
 curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
 chmod +x /usr/local/bin/docker-compose
 
-systemctl enable docker  # ÉèÖÃ¿ª»ú×Ô¶¯Æô¶¯
+systemctl enable docker  # è®¾ç½®å¼€æœºè‡ªåŠ¨å¯åŠ¨
 
 systemctl restart docker
 
 
-´´½¨frp.tomlÎÄ¼ş²¢´´½¨Ä¿Â¼
+åˆ›å»ºfrp.tomlæ–‡ä»¶å¹¶åˆ›å»ºç›®å½•
 mkdir /etc/frp
 vim /frp/frps.toml
 
-frps.tomlÅäÖÃ
+frps.tomlé…ç½®
 bindPort = 7000
 auth.method = "token"
 auth.token = "8ad3d1x429a2d"
@@ -40,31 +40,31 @@ log.level = "info"
 log.maxDays = 3
 
 
-À­È¡¾µÏñ
+æ‹‰å–é•œåƒ
 docker pull snowdreamtech/frps:latest
-Æô¶¯dockerÈİÆ÷
+å¯åŠ¨dockerå®¹å™¨
 docker run --restart=always --network host -d -v /etc/frp/frps.toml:/etc/frp/frps.toml --name frps snowdreamtech/frps
 
 
-¿Í»§¶ËÅäÖÃ
+å®¢æˆ·ç«¯é…ç½®
 
-´´½¨frp.tomlÎÄ¼ş²¢´´½¨Ä¿Â¼
+åˆ›å»ºfrp.tomlæ–‡ä»¶å¹¶åˆ›å»ºç›®å½•
 mkdir /etc/frp
 vim /frp/frpc.toml
 
-frpc.tomlÅäÖÃ
+frpc.tomlé…ç½®
 # frpc.toml
-transport.tls.enable = true        # ´Ó v0.50.0°æ±¾¿ªÊ¼£¬transport.tls.enableµÄÄ¬ÈÏÖµÎª true
-serverAddr = "45.42.214.75"
-serverPort = 7000                 # ¹«Íø·şÎñ¶ËÍ¨ĞÅ¶Ë¿Ú
-auth.token = "8ad3d1x429a2d"             # ÁîÅÆ£¬Óë¹«Íø·şÎñ¶Ë±£³ÖÒ»ÖÂ
+transport.tls.enable = true        # ä» v0.50.0ç‰ˆæœ¬å¼€å§‹ï¼Œtransport.tls.enableçš„é»˜è®¤å€¼ä¸º true
+serverAddr = "45.42.*.*"
+serverPort = 7000                 # å…¬ç½‘æœåŠ¡ç«¯é€šä¿¡ç«¯å£
+auth.token = "8ad3d1x429a2d"             # ä»¤ç‰Œï¼Œä¸å…¬ç½‘æœåŠ¡ç«¯ä¿æŒä¸€è‡´
 
 [[proxies]]
 name = "ik"
 type = "tcp"
-localIP = "192.168.1.250"            # ĞèÒª±©Â¶µÄ·şÎñµÄIP
-localPort = 80                # ½«±¾µØ9000¶Ë¿ÚµÄ·şÎñ±©Â¶ÔÚ¹«ÍøµÄ6060¶Ë¿Ú
-remotePort = 6025                 # ±©Â¶·şÎñµÄ¹«ÍøÈë¿Ú
+localIP = "192.168.1.250"            # éœ€è¦æš´éœ²çš„æœåŠ¡çš„IP
+localPort = 80                # å°†æœ¬åœ°9000ç«¯å£çš„æœåŠ¡æš´éœ²åœ¨å…¬ç½‘çš„6060ç«¯å£
+remotePort = 6025                 # æš´éœ²æœåŠ¡çš„å…¬ç½‘å…¥å£
 
 [[proxies]]
 name = "op"
@@ -110,9 +110,9 @@ localPort = 9090
 remotePort = 6090
 
 
-À­È¡¾µÏñ
+æ‹‰å–é•œåƒ
 docker pull snowdreamtech/frpc:latest
-Æô¶¯dockerÈİÆ÷
+å¯åŠ¨dockerå®¹å™¨
 docker run --restart=always --network host -d -v /etc/frp/frpc.toml:/etc/frp/frpc.toml --name frps snowdreamtech/frpc
 
 
