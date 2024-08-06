@@ -113,7 +113,7 @@ remotePort = 6090
 拉取镜像
 docker pull snowdreamtech/frpc:latest
 启动docker容器
-docker run --restart=always --network host -d -v /etc/frp/frpc.toml:/etc/frp/frpc.toml --name frps snowdreamtech/frpc
+docker run --restart=always --network host -d -v /etc/frp/frpc.toml:/etc/frp/frpc.toml --name frpc snowdreamtech/frpc
 
 
 
