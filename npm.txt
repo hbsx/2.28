@@ -1,5 +1,5 @@
-mkdir -p /root/etc/npm
-cd /root/etc/npm
+mkdir -p /etc/npm
+cd /etc/npm
 vim docker-compose.yml
 
 version: '3'
