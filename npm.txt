@@ -8,25 +8,25 @@ services:
     image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped
     ports:
-      - '80:80'  # ±£³ÖÄ¬ÈÏ¼´¿É£¬²»½¨ÒéĞŞ¸Ä×ó²àµÄ80
-      - '81:81'  # Ã°ºÅ×ó±ß¿ÉÒÔ¸Ä³É×Ô¼º·şÎñÆ÷Î´±»Õ¼ÓÃµÄ¶Ë¿Ú
-      - '443:443' # ±£³ÖÄ¬ÈÏ¼´¿É£¬²»½¨ÒéĞŞ¸Ä×ó²àµÄ443
+      - '80:80'  # ä¿æŒé»˜è®¤å³å¯ï¼Œä¸å»ºè®®ä¿®æ”¹å·¦ä¾§çš„80
+      - '81:81'  # å†’å·å·¦è¾¹å¯ä»¥æ”¹æˆè‡ªå·±æœåŠ¡å™¨æœªè¢«å ç”¨çš„ç«¯å£
+      - '443:443' # ä¿æŒé»˜è®¤å³å¯ï¼Œä¸å»ºè®®ä¿®æ”¹å·¦ä¾§çš„443
     volumes:
-      - ./data:/data # Ã°ºÅ×ó±ß¿ÉÒÔ¸ÄÂ·¾¶£¬ÏÖÔÚÊÇ±íÊ¾°ÑÊı¾İ´æ·ÅÔÚÔÚµ±Ç°ÎÄ¼ş¼ĞÏÂµÄ data ÎÄ¼ş¼ĞÖĞ
-      - ./letsencrypt:/etc/letsencrypt  # Ã°ºÅ×ó±ß¿ÉÒÔ¸ÄÂ·¾¶£¬ÏÖÔÚÊÇ±íÊ¾°ÑÊı¾İ´æ·ÅÔÚÔÚµ±Ç°ÎÄ¼ş¼ĞÏÂµÄ letsencrypt ÎÄ¼ş¼ĞÖĞ
+      - ./data:/data # å†’å·å·¦è¾¹å¯ä»¥æ”¹è·¯å¾„ï¼Œç°åœ¨æ˜¯è¡¨ç¤ºæŠŠæ•°æ®å­˜æ”¾åœ¨åœ¨å½“å‰æ–‡ä»¶å¤¹ä¸‹çš„ data æ–‡ä»¶å¤¹ä¸­
+      - ./letsencrypt:/etc/letsencrypt  # å†’å·å·¦è¾¹å¯ä»¥æ”¹è·¯å¾„ï¼Œç°åœ¨æ˜¯è¡¨ç¤ºæŠŠæ•°æ®å­˜æ”¾åœ¨åœ¨å½“å‰æ–‡ä»¶å¤¹ä¸‹çš„ letsencrypt æ–‡ä»¶å¤¹ä¸­
 
 
 
-°´Ò»ÏÂ esc£¬È»ºó :wq ±£´æÍË³ö£¬Ö®ºó
+æŒ‰ä¸€ä¸‹ escï¼Œç„¶å :wq ä¿å­˜é€€å‡ºï¼Œä¹‹å
 
-lsof -i:81  #²é¿´ 81 ¶Ë¿ÚÊÇ·ñ±»Õ¼ÓÃ£¬Èç¹û±»Õ¼ÓÃ£¬ÖØĞÂ×Ô¶¨ÒåÒ»¸ö¶Ë¿Ú
+lsof -i:81  #æŸ¥çœ‹ 81 ç«¯å£æ˜¯å¦è¢«å ç”¨ï¼Œå¦‚æœè¢«å ç”¨ï¼Œé‡æ–°è‡ªå®šä¹‰ä¸€ä¸ªç«¯å£
 
 -bash: lsof: command not found
 
 
-apt install lsof  #°²×° lsof
+apt install lsof  #å®‰è£… lsof
 
-cd /root/etc/npm   # À´µ½ dockercompose ÎÄ¼şËùÔÚµÄÎÄ¼ş¼ĞÏÂ
+cd /root/etc/npm   # æ¥åˆ° dockercompose æ–‡ä»¶æ‰€åœ¨çš„æ–‡ä»¶å¤¹ä¸‹
 
 docker-compose up -d
 
@@ -34,6 +34,34 @@ http://ip:81
 
 Email:    admin@example.com
 Password: changeme
+
+
+
+ç”³è¯·è¯ä¹¦
+
+curl https://get.acme.sh | sh
+
+~/.acme.sh/acme.sh --register-account -m xxxx@gmail.com
+
+~/.acme.sh/acme.sh --issue -d s.kejilion.eu.org --standalone
+
+
+
+ä¸‹è½½è¯ä¹¦
+
+~/.acme.sh/acme.sh --installcert -d s.kejilion.eu.org --key-file /home/web/certs/key.pem --fullchain-file /home/web/certs/cert.pem
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
