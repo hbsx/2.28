@@ -130,7 +130,55 @@ docker pull snowdreamtech/frpc:latest
 docker run --restart=always --network host -d -v /etc/frp/frpc.toml:/etc/frp/frpc.toml --name frpc snowdreamtech/frpc
 
 
+===============================================================================================
 
+开启BBR
+
+
+# 第一项检查：
+root@topvps:~# sysctl net.ipv4.tcp_available_congestion_control | grep bbr
+
+# 若已开启bbr，结果通常为以下两种：
+net.ipv4.tcp_available_congestion_control = bbr cubic reno
+net.ipv4.tcp_available_congestion_control = reno cubic bbr
+
+# 第二项检查：
+root@topvps:~# sysctl net.ipv4.tcp_congestion_control | grep bbr
+# 若已开启bbr，结果如下：
+net.ipv4.tcp_congestion_control = bbr
+
+# 第三项检查：
+root@topvps:~# sysctl net.core.default_qdisc | grep fq
+# 若已开启bbr，结果如下：
+net.core.default_qdisc = fq
+
+# 第四项检查：
+root@topvps:~# lsmod | grep bbr
+# 若已开启bbr，结果可能如下。并不是所有的 VPS 都会有此返回值，若没有也属正常。
+tcp_bbr                20480  2
+
+若上面的检查发现当前的内核没有开启bbr，可以执行以下命令一键安装、启用：
+
+wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+
+注意：脚本不支持OpenVZ。
+
+---------- System Information ----------
+ OS      : Ubuntu 18.04.2 LTS
+ Arch    : x86_64 (64 Bit)
+ Kernel  : 4.15.0-50-generic
+----------------------------------------
+ Auto install latest kernel for TCP BBR
+
+ URL: https://teddysun.com/489.html
+----------------------------------------
+
+Press any key to start...or Press Ctrl+C to cancel
+
+Info: Your kernel version is greater than 4.9, directly setting TCP BBR...
+Info: Setting TCP BBR completed...
+root@qly-hk:~# lsmod | grep bbr
+tcp_bbr                20480  1
 
 
 
