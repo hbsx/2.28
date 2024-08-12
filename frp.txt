@@ -181,7 +181,38 @@ root@qly-hk:~# lsmod | grep bbr
 tcp_bbr                20480  1
 
 
+==============================================================================================
 
+我们的演示服务器是一台香港的Debian服务器，配置是1核1G，公网IP是154.91.177.93。
+
+首先，我们通过SSH登录到服务器。
+
+由于此服务器系统的软件源配置有问题，我们将恢复到官方源。
+
+将sources.list文件修改为以下内容
+
+mv /etc/apt/sources.list /etc/apt/sources.list.old
+cat > /etc/apt/sources.list << EOF
+deb http://deb.debian.org/debian/ bullseye main contrib non-free
+deb-src http://deb.debian.org/debian/ bullseye main contrib non-free
+deb http://deb.debian.org/debian/ bullseye-updates main contrib non-free
+deb-src http://deb.debian.org/debian/ bullseye-updates main contrib non-free
+deb http://deb.debian.org/debian/ bullseye-backports main contrib non-free
+deb-src http://deb.debian.org/debian/ bullseye-backports main contrib non-free
+deb http://deb.debian.org/debian-security/ bullseye-security main contrib non-free
+deb-src http://deb.debian.org/debian-security/ bullseye-security main contrib non-free
+EOF
+
+然后更新系统。
+
+apt update -y
+
+使用LinuxMirrors提供的Docker安装脚本，拷贝粘贴。
+
+bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+回车运行。选择y，安装最新的版本； 因为是香港的服务器，所以选官方1； 选择香港的注册源，17；
+
+等待安装完成，安装完成。
 
 
 
