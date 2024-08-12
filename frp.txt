@@ -214,5 +214,114 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 
 等待安装完成，安装完成。
 
+=====================================================================================================
+
+docker-compose 方式搭建frp
+
+mkdir /www/dk_project/frps
+cd /www/dk_project/frps
+
+
+新建docker-compose.yml文件，输入vi docker-compose.yml。
+
+vi docker-compose.yml
+拷贝yaml内容，粘贴；保存文件。
+
+version: '3.3'
+services:
+  frps:
+    container_name: frps # 容器名称
+    image: snowdreamtech/frps # 容器映像
+    restart: always # 永远重启
+    network_mode: host # 网络：主机模式
+    volumes:
+      - './frps.toml:/etc/frp/frps.toml' # 配置文件  
+
+新建frps.toml文件，输入vi frps.toml。
+
+vi frps.toml
+粘贴frps.toml内容。
+
+此文件配置了服务器端口值，以及Token的字符串值，请保存这些值以供它处使用。
+
+bindPort = 93 # 绑定端口
+auth.token = "MyToken123456"
+
+运行Frp服务器端容器
+
+docker compose up -d
+等待拉取镜像，拉取镜像完成，容器运行成功
+
+
+
+客户端搭建
+
+创建Frpc目录，并转到此目录。
+
+mkdir -p /root/dk/frpc
+cd /root/dk/frpc
+
+新建docker-compose.yml文件，输入vi docker-compose.yml。
+
+vi docker-compose.yml
+
+拷贝yaml内容，粘贴；保存文件
+
+version: '3.3'
+services:
+  frps:
+    container_name: frpc # 容器名称
+    image: snowdreamtech/frpc # 容器映像
+    restart: always # 永远重启
+    network_mode: host # 网络：主机模式
+    volumes:
+      - './frpc.toml:/etc/frp/frpc.toml' # 配置文件  
+
+
+新建frpc.toml文件，输入vi frpc.toml。
+
+vi frpc.toml
+
+粘贴frpc.toml内容。其中，
+
+serverAddr填入服务器的IP；serverPort填入服务器的端口；token输入与服务器同样的字符；
+
+余下就是两个服务的定义：
+
+一个是SSH和NAS服务。请按照实际情况填写，在保存。
+
+# frpc.toml
+serverAddr = "154.91.177.93" # 服务器IP
+serverPort = 93 # 服务器端口
+auth.token = "MyToken123456" # Token
+
+[[proxies]]
+name = "ssh" # 服务名称
+type = "tcp" # 服务类型
+localIP = "127.0.0.1"  # 本地IP
+localPort = 223 # 本地端口
+remotePort = 94  # 远程端口
+
+[[proxies]]
+name = "nas" # 服务名称
+type = "tcp" # 服务类型
+localIP = "127.0.0.1" # 本地IP
+localPort = 50603 # 本地端口
+remotePort = 95 # 远程端口
+
+运行Frp客户端容器
+
+docker-compose up -d
+
+等待拉取镜像，拉取镜像完成，容器运行成功
+
+
+
+
+
+
+
+
+
 
 
