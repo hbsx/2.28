@@ -4,6 +4,6 @@ docker run -d --restart=always -p 25500:25500 asdlokj1qpi23/subconverter:latest
 
 
 X-UI 安装
-apt update -y          # Debian/Ubuntu 命令
-apt install -y curl socat    #Debian/Ubuntu 命令
-bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh) #X-ui面板安装
+apt update -y                                    # Debian/Ubuntu 命令
+apt install -y curl socat                        #Debian/Ubuntu 命令
+bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)                    #X-ui面板安装
