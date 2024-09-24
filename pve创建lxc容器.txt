@@ -1,0 +1,81 @@
+
+
+PVE，选择Shlle
+
+nano /etc/pve/lxc/[模板ID].conf
+
+加入代码
+
+lxc.apparmor.profile: unconfined
+lxc.cgroup.devices.allow: a
+lxc.cap.drop:
+
+5.2.核显配置
+
+查看当前核显情况
+
+ls -l /dev/dri
+
+nano /etc/pve/lxc/[模板ID].conf
+
+lxc.cgroup2.devices.allow: c 226:0 rwm
+lxc.cgroup2.devices.allow: c 226:128 rwm
+lxc.cgroup2.devices.allow: c 29:0 rwm
+lxc.mount.entry: /dev/dri dev/dri none bind,optional,create=dir
+lxc.mount.entry: /dev/fb0 dev/fb0 none bind,optional,create=file
+
+在Shell中执行以下命令，用来给CT模板换源
+
+cp /usr/share/perl5/PVE/APLInfo.pm /usr/share/perl5/PVE/APLInfo.pm_back
+
+sed -i 's|http://download.proxmox.com|https://mirrors.tuna.tsinghua.edu.cn/proxmox|g' /usr/share/perl5/PVE/APLInfo.pm
+
+重启服务
+
+systemctl restart pvedaemon.service
+
+
+更换系统软件源
+
+cd /dev/dri
+
+ls
+
+apt install curl -y
+
+mv /etc/apt/sources.list /etc/apt/sources.list.bk
+
+nano /etc/apt/sources.list
+
+粘贴
+
+deb https://mirrors.ustc.edu.cn/debian/ bullseye main non-free contrib
+
+deb-src https://mirrors.ustc.edu.cn/debian/ bullseye main non-free contrib
+
+deb https://mirrors.ustc.edu.cn/debian-security/ bullseye-security main
+
+deb-src https://mirrors.ustc.edu.cn/debian-security/ bullseye-security main
+
+deb https://mirrors.ustc.edu.cn/debian/ bullseye-updates main non-free contrib
+
+deb-src https://mirrors.ustc.edu.cn/debian/ bullseye-updates main non-free contrib
+
+deb https://mirrors.ustc.edu.cn/debian/ bullseye-backports main non-free contrib
+
+deb-src https://mirrors.ustc.edu.cn/debian/ bullseye-backports main non-free contrib
+
+更新
+
+apt update
+
+apt upgrade -y
+
+
+
+
+
+
+
+
+
