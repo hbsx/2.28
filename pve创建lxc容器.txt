@@ -1,22 +1,30 @@
+å¼€å¯ssh
+sed -i 's/^.*PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config
+sed -i 's/^.*PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+service ssh restart
 
 
-PVE£¬Ñ¡ÔñShlle
 
-nano /etc/pve/lxc/[Ä£°åID].conf
 
-¼ÓÈë´úÂë
+
+
+PVEï¼Œé€‰æ‹©Shlle
+
+nano /etc/pve/lxc/[æ¨¡æ¿ID].conf
+
+åŠ å…¥ä»£ç 
 
 lxc.apparmor.profile: unconfined
 lxc.cgroup.devices.allow: a
 lxc.cap.drop:
 
-5.2.ºËÏÔÅäÖÃ
+5.2.æ ¸æ˜¾é…ç½®
 
-²é¿´µ±Ç°ºËÏÔÇé¿ö
+æŸ¥çœ‹å½“å‰æ ¸æ˜¾æƒ…å†µ
 
 ls -l /dev/dri
 
-nano /etc/pve/lxc/[Ä£°åID].conf
+nano /etc/pve/lxc/[æ¨¡æ¿ID].conf
 
 lxc.cgroup2.devices.allow: c 226:0 rwm
 lxc.cgroup2.devices.allow: c 226:128 rwm
@@ -24,18 +32,18 @@ lxc.cgroup2.devices.allow: c 29:0 rwm
 lxc.mount.entry: /dev/dri dev/dri none bind,optional,create=dir
 lxc.mount.entry: /dev/fb0 dev/fb0 none bind,optional,create=file
 
-ÔÚShellÖĞÖ´ĞĞÒÔÏÂÃüÁî£¬ÓÃÀ´¸øCTÄ£°å»»Ô´
+åœ¨Shellä¸­æ‰§è¡Œä»¥ä¸‹å‘½ä»¤ï¼Œç”¨æ¥ç»™CTæ¨¡æ¿æ¢æº
 
 cp /usr/share/perl5/PVE/APLInfo.pm /usr/share/perl5/PVE/APLInfo.pm_back
 
 sed -i 's|http://download.proxmox.com|https://mirrors.tuna.tsinghua.edu.cn/proxmox|g' /usr/share/perl5/PVE/APLInfo.pm
 
-ÖØÆô·şÎñ
+é‡å¯æœåŠ¡
 
 systemctl restart pvedaemon.service
 
 
-¸ü»»ÏµÍ³Èí¼şÔ´
+æ›´æ¢ç³»ç»Ÿè½¯ä»¶æº
 
 cd /dev/dri
 
@@ -47,7 +55,7 @@ mv /etc/apt/sources.list /etc/apt/sources.list.bk
 
 nano /etc/apt/sources.list
 
-Õ³Ìù
+ç²˜è´´
 
 deb https://mirrors.ustc.edu.cn/debian/ bullseye main non-free contrib
 
@@ -65,7 +73,7 @@ deb https://mirrors.ustc.edu.cn/debian/ bullseye-backports main non-free contrib
 
 deb-src https://mirrors.ustc.edu.cn/debian/ bullseye-backports main non-free contrib
 
-¸üĞÂ
+æ›´æ–°
 
 apt update
 
