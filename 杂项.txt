@@ -11,3 +11,6 @@ bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
 
 
 PtOGqWv-mnAaEoWQw-GHPO1jZTfHWf2d5WmgOqwd       令牌   
+
+
+去广告脚本。https://github.com/TheRealJoelmatic/RemoveAdblockThing
