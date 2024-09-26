@@ -26,18 +26,24 @@ x-ui
 
 =======================================================================================
 创建
+    
     mkdir -p /etc/npm
+
 cd到目录    
+    
     cd /etc/npm
 编辑    
+    
     vim docker-compose.yml
+
 内容
+    
     version: '3'
     services:
     app:
-        image: 'jc21/nginx-proxy-manager:latest'
-        restart: unless-stopped
-        ports:
+      image: 'jc21/nginx-proxy-manager:latest'
+      restart: unless-stopped
+         ports:
       - '80:80'  # 保持默认即可，不建议修改左侧的80
       - '81:81'  # 冒号左边可以改成自己服务器未被占用的端口
       - '443:443' # 保持默认即可，不建议修改左侧的443
