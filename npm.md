@@ -23,8 +23,7 @@ x-ui
     
     ~/.acme.sh/acme.sh --install-cert -d 你的域名 --ecc --key-file /etc/x-ui/server.key --fullchain-file /etc/x-ui/server.crt
 
-
-=======================================================================================
+****
 创建
     
     mkdir -p /etc/npm
@@ -52,15 +51,14 @@ cd到目录
       - ./letsencrypt:/etc/letsencrypt  # 冒号左边可以改路径，现在是表示把数据存放在在当前文件夹下的 letsencrypt 文件夹中
 
 
-
 按一下 esc，然后 :wq 保存退出，之后
 
 lsof -i:81  #查看 81 端口是否被占用，如果被占用，重新自定义一个端口
 
 -bash: lsof: command not found
 
-
 apt install lsof  #安装 lsof
+
 
 cd /root/etc/npm   # 来到 dockercompose 文件所在的文件夹下
 
@@ -71,7 +69,7 @@ http://ip:81
 Email:    admin@example.com
 Password: changeme
 
-========================================
+****
 
 申请证书
 
@@ -82,12 +80,11 @@ curl https://get.acme.sh | sh
 ~/.acme.sh/acme.sh --issue -d s.kejilion.eu.org --standalone
 
 
-
 下载证书
 
 ~/.acme.sh/acme.sh --installcert -d s.kejilion.eu.org --key-file /home/web/certs/key.pem --fullchain-file /home/web/certs/cert.pem
 
-================================================
+****
 
 
 
