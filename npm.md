@@ -6,7 +6,9 @@ bash <(curl -Ls https://raw.githubusercontent.com/FranzKafkaYu/x-ui/956bf85bbac9
 
 #三种方式任选其中一种，申请失败则更换方式
 #申请证书方式1： 
-~/.acme.sh/acme.sh  --issue -d 你的域名 --standalone -k ec-256 --force --insecure
+  
+  ~/.acme.sh/acme.sh  --issue -d 你的域名 --standalone -k ec-256 --force --insecure
+  
 #申请证书方式2： 
 ~/.acme.sh/acme.sh --register-account -m "${RANDOM}@chacuo.net" --server buypass --force --insecure && ~/.acme.sh/acme.sh  --issue -d 你的域名 --standalone -k ec-256 --force --insecure --server buypass
 #申请证书方式3： 
