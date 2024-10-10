@@ -1,8 +1,6 @@
 支持所有协议的后端转换安装命令：
-
-    
-        
-    docker run -d --restart=always -p 25500:25500 asdlokj1qpi23/subconverter:latest
+      
+docker run -d --restart=always -p 25500:25500 asdlokj1qpi23/subconverter:latest
         
 
 
@@ -11,12 +9,12 @@ apt update -y                                    # Debian/Ubuntu 命令
 apt install -y curl socat                        #Debian/Ubuntu 命令
 bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)                    #X-ui面板安装
 
-bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
 
 PtOGqWv-mnAaEoWQw-GHPO1jZTfHWf2d5WmgOqwd       令牌   
 
 
 去广告脚本。https://github.com/TheRealJoelmatic/RemoveAdblockThing
+
 
 修改ssh端口
 # 执行下面的命令，修改 ListenStream= 后面的端口号。
