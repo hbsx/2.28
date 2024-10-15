@@ -29,3 +29,12 @@ vi /usr/lib/systemd/system/ssh.socket
 systemctl daemon-reload
 # 重启 socket
 systemctl restart ssh.socket
+
+
+telnet smtp.qq.com 25
+有下面输出就表示端口开的
+Trying 1xxx.xxx.xxx.xxx...
+
+Connected to smtp.qq.com.
+
+Escape character is '^]'.
