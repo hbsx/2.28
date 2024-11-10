@@ -41,6 +41,6 @@ Connected to smtp.qq.com.
 Escape character is '^]'.
 
 
-
+bash <(wget -qO- https://raw.githubusercontent.com/yonggekkk/sing-box-yg/main/sb.sh)
 
 curl -sS -O https://raw.githubusercontent.com/kejilion/sh/main/kejilion.sh && chmod +x kejilion.sh && ./kejilion.sh
