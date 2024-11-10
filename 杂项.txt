@@ -38,3 +38,8 @@ Trying 1xxx.xxx.xxx.xxx...
 Connected to smtp.qq.com.
 
 Escape character is '^]'.
+
+
+
+
+curl -sS -O https://raw.githubusercontent.com/kejilion/sh/main/kejilion.sh && chmod +x kejilion.sh && ./kejilion.sh
