@@ -18,6 +18,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/FranzKafkaYu/x-ui/master/insta
 
 PtOGqWv-mnAaEoWQw-GHPO1jZTfHWf2d5WmgOqwd       令牌   
 
+72db73a0981ea28f61798c29c3f95784bdc669ba    哪吒id
 
 去广告脚本。https://github.com/TheRealJoelmatic/RemoveAdblockThing
 
