@@ -1,3 +1,12 @@
+安装docker(如果没有docker):
+wget -qO- Https://get.docker.com/ | sh
+
+国内主机安装docker(如果没有docker):
+wget https://jj.cjy.me/api/public/dl/dWGamhW7/get-docker.sh
+sh get-docker.sh --mirror Aliyun
+安装完成后 docker ps 命令无报错
+
+
 支持所有协议的后端转换安装命令：
       
 docker run -d --restart=always -p 25500:25500 asdlokj1qpi23/subconverter:latest
