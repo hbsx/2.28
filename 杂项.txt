@@ -10,7 +10,9 @@ sh get-docker.sh --mirror Aliyun
 支持所有协议的后端转换安装命令：
       
 docker run -d --restart=always -p 25500:25500 asdlokj1qpi23/subconverter:latest
-        
+
+docker run -d --name sing-box-subscribe -p 5000:5000 --restart=always jwy8645/sing-box-subscr
+
 
 
 X-UI 安装
