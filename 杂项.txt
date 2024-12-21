@@ -11,7 +11,8 @@ sh get-docker.sh --mirror Aliyun
       
 docker run -d --restart=always -p 25500:25500 asdlokj1qpi23/subconverter:latest
 
-docker run -d --name sing-box-subscribe -p 5000:5000 --restart=always jwy8645/sing-box-subscribe:amd64
+docker run -d --name sing-box-subscribe --restart always -p 5000:5000 jwy8645/sing-box-subscribe:amd64
+
 
 
 
