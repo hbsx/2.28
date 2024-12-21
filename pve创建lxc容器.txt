@@ -111,6 +111,8 @@ deb-src https://mirrors.ustc.edu.cn/debian/ bullseye-backports main non-free con
 
 更新
 
+apt update -y  && apt upgrade -y && apt install -y curl wget sudo socat
+
 apt update
 
 apt upgrade -y
