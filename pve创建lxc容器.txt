@@ -6,6 +6,24 @@ service ssh restart
 
 
 
+上传文件路径
+cd /var/lib/vz/template/cache
+修改xc容器文件
+cd /etc/pve/lxc/
+在文件中添加的命令
+lxc.apparmor.profile:unconfined
+lxc.cgroup.devices.allow:a
+lxc.cap.drop:
+更新apt包，索引并安装包以允许apt通过HTTPS使用存储库
+sudo apt-get update I
+sudo apt-get install -y\
+ca-certificates\
+curl
+gnupg
+Isb-release
+
+
+
 
 
 PVE，选择Shlle
@@ -84,6 +102,17 @@ EOF
 
 
 
+cat << EOF > /etc/apt/sources.list
+deb http://mirrors.aliyun.com/ubuntu/ jammy main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ jammy-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ jammy-backports main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ jammy-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ jammy main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ jammy-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ jammy-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ jammy-security main restricted universe multiverse
+EOF
+
 
 
 
@@ -117,6 +146,17 @@ apt update
 
 apt upgrade -y
 
+运行以下命令查看有哪些软件包可以升级：
+
+bash
+复制代码
+apt list --upgradable
+
+如果你希望升级所有可用的软件包，可以运行以下命令：
+
+bash
+复制代码
+sudo apt upgrade
 
 
 
