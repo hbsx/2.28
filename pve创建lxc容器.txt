@@ -25,6 +25,74 @@ Isb-release
 
 
 
+pve 换源
+（1）更换为国内清华源：
+将自带的源文件sources.list备份
+cp /etc/apt/sources.list /etc/apt/sources.list_bak
+
+编辑sources.list
+nano /etc/apt/sources.list
+ 
+#粘贴一下内容
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-updates main contrib non-free
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-backports main contrib non-free
+deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free
+（2）编辑pve企业源：
+nano /etc/apt/sources.list.d/pve-enterprise.list
+将其中原有的proxmox句首加# 注释掉，变为：
+#deb https://enterprise.proxmox.com/debian/pve bullseye pve-enterprise
+添加以下清华源：
+deb https://mirrors.tuna.tsinghua.edu.cn/proxmox/debian bullseye pve-no-subscription
+更新并升级
+apt update && apt dist-upgrade -y
+
+
+方法一：命令行直接升级PVE7.x到8.0
+
+1、升级8.0开始更换8.0的源
+PVE（8.0）换源：
+1、升级8.0开始更换8.0的源
+#将自带的源文件sources.list备份
+cp /etc/apt/sources.list /etc/apt/sources.list_bak
+nano /etc/apt/sources.list
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware
+deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bookworm-security main contrib non-free non-free-firmware
+
+编辑pve企业源：
+nano /etc/apt/sources.list.d/pve-enterprise.list
+将其中原有的proxmox句首加# 注释掉，变为：#deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise
+#添加以下清华源：
+deb https://mirrors.tuna.tsinghua.edu.cn/proxmox/debian/pve bookworm pve-no-subscription
+2、修复源401错误
+echo "deb https://mirrors.ustc.edu.cn/proxmox/debian/ceph-quincy bookworm no-subscription" > /etc/apt/sources.list.d/ceph.list
+3、下载官方证书
+wget https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg -O /etc/apt/trusted.gpg.d/proxmox-release-bookworm.gpg
+4、运行检测，看有无严重问题
+pve7to8 --full
+5、检查无误后开始升级
+
+更新列表并升级
+apt update && apt dist-upgrade -y
+6、然后顺便把LXC更换国内源
+cp /usr/share/perl5/PVE/APLInfo.pm /usr/share/perl5/PVE/APLInfo.pm_back
+ 
+sed -i 's|http://download.proxmox.com|https://mirrors.tuna.tsinghua.edu.cn/proxmox|g' /usr/share/perl5/PVE/APLInfo.pm
+ 
+systemctl restart pvedaemon.service
+
+7、升级无明显报错后，重启PVE
+
+reboot
+
+
+
+
+
+
+
 
 PVE，选择Shlle
 
@@ -44,14 +112,6 @@ lxc.apparmor.profile: unconfined
 查看当前核显情况
 
 ls -l /dev/dri
-
-nano /etc/pve/lxc/[模板ID].conf
-
-lxc.cgroup2.devices.allow: c 226:0 rwm
-lxc.cgroup2.devices.allow: c 226:128 rwm
-lxc.cgroup2.devices.allow: c 29:0 rwm
-lxc.mount.entry: /dev/dri dev/dri none bind,optional,create=dir
-lxc.mount.entry: /dev/fb0 dev/fb0 none bind,optional,create=file
 
 在Shell中执行以下命令，用来给CT模板换源
 
@@ -76,28 +136,11 @@ mv /etc/apt/sources.list /etc/apt/sources.list.bk
 
 nano /etc/apt/sources.list
 
-
-
-
 cat << EOF > /etc/apt/sources.list
 deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware
 deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware
 deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware
 deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bookworm-security main contrib non-free non-free-firmware
-EOF
-
-cat << EOF > /etc/apt/sources.list
-# 中科大
-deb https://mirrors.ustc.edu.cn/ubuntu/ focal main restricted universe multiverse
-deb https://mirrors.ustc.edu.cn/ubuntu/ focal-updates main restricted universe multiverse
-deb https://mirrors.ustc.edu.cn/ubuntu/ focal-backports main restricted universe multiverse
-deb https://mirrors.ustc.edu.cn/ubuntu/ focal-security main restricted universe multiverse
-deb https://mirrors.ustc.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse
-deb-src https://mirrors.ustc.edu.cn/ubuntu/ focal main restricted universe multiverse
-deb-src https://mirrors.ustc.edu.cn/ubuntu/ focal-updates main restricted universe multiverse
-deb-src https://mirrors.ustc.edu.cn/ubuntu/ focal-backports main restricted universe multiverse
-deb-src https://mirrors.ustc.edu.cn/ubuntu/ focal-security main restricted universe multiverse
-deb-src https://mirrors.ustc.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse
 EOF
 
 
@@ -115,28 +158,6 @@ EOF
 
 
 
-
-
-
-
-
-粘贴
-
-deb https://mirrors.ustc.edu.cn/debian/ bullseye main non-free contrib
-
-deb-src https://mirrors.ustc.edu.cn/debian/ bullseye main non-free contrib
-
-deb https://mirrors.ustc.edu.cn/debian-security/ bullseye-security main
-
-deb-src https://mirrors.ustc.edu.cn/debian-security/ bullseye-security main
-
-deb https://mirrors.ustc.edu.cn/debian/ bullseye-updates main non-free contrib
-
-deb-src https://mirrors.ustc.edu.cn/debian/ bullseye-updates main non-free contrib
-
-deb https://mirrors.ustc.edu.cn/debian/ bullseye-backports main non-free contrib
-
-deb-src https://mirrors.ustc.edu.cn/debian/ bullseye-backports main non-free contrib
 
 更新
 
