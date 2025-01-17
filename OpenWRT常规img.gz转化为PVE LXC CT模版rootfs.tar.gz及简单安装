@@ -1,0 +1,98 @@
+OpenWRT常规img.gz转化为PVE LXC CT模版rootfs.tar.gz及简单安装
+
+wget https://fw0.koolcenter.com/iStoreOS/x86_64_efi/istoreos-21.02.3-2023051217-x86-64-squashfs-combined-efi.img.gz
+
+解压缩
+gzip -d istoreos-21.02.3-2023051217-x86-64-squashfs-combined-efi.img.gz
+
+重命名
+mv istoreos-21.02.3-2023051217-x86-64-squashfs-combined-efi.img istoreos.img
+
+1、挂载img
+modprobe nbd
+qemu-nbd -c /dev/nbd0 -f raw istoreos.img
+
+2、建立文件夹
+
+mkdir /mnt/openwrt
+3、查看挂载的nbd0
+
+lsblk -f /dev/nbd0
+4、挂载分区
+
+mount /dev/nbd0p2 /mnt/openwrt
+cd /mnt/openwrt && ls
+5、打包成rootfs.tar.gz文件
+
+tar -czvf /var/lib/vz/template/cache/openwrt.rootfs.tar.gz *
+6、查看/var/lib/vz/template/cache/文件夹中是否生成此文件
+
+ls /var/lib/vz/template/cache/openwrt.rootfs.tar.gz
+7、卸载挂载
+
+cd ..
+ 
+umount /mnt/openwrt/
+ 
+qemu-nbd -d /dev/nbd0
+
+
+二、安装：
+
+pct create 103 local:vztmpl/istoreos.rootfs.tar.gz --rootfs local-lvm:1 --ostype unmanaged --hostname Openwrt-LXC --arch amd64 --cores 1 --memory 512 --swap 0 -net0 bridge=vmbr0,name=eth0
+
+解释：
+pct create：容器创建命令
+110：容器ID，可根据自己情况设定
+local:vztmpl/openwrt-x86-64-generic-ext4-rootfs.tar.gz： 上传/下载到local—CT模板中的OP固件全名
+--rootfs：模版为rootfs文件
+local-lvm:1 ：模板安装后磁盘镜像所在（部分小伙伴可能只有1个local没有local-lvm，注意用local），冒号后数字代表分配磁盘大小（单位G）按需设置，1为1G，2为2G
+--ostype unmanaged：操作系统类型，这里没有填写指定的操作系统（不会影响）
+--hostname Openwrt-LXC：主机名（容器名称）可自定义。
+--arch amd64：设置为64位
+--cores 1：分配给容器的核心数，1：1核，2：2核等等（按需设置）
+--memory 512：分配给容器最大的内存数量（单位M）（按需设置）
+--swap 0：交换分区设置为0（按需设置）
+-net0 bridge=vmbr0,name=eth0：网卡，上桥接PVE默认虚拟网桥vmbr0，名称eth0。必须，否则op无法联网。
+
+
+二、设置
+
+作为旁路由使用的容器设置：
+nano /etc/pve/lxc/（容器ID）.conf
+进入最下面添加如下（tun设备映射，影响到如ZT等使用tun的插件）：
+
+lxc.cgroup2.devices.allow: c 10:200 rwm
+lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
+
+三、初始化
+
+启动OP-LXC容器
+
+vi /etc/config/network
+点i进入编辑模式
+修改IP
+点ESC——英文冒号:wq 回车保存退出
+
+
+浏览器中输入OP-LXC的IP 登录WebUI后
+
+初始化网络接口
+1、网关（主路由）
+2、DNS（主/备2个较好）
+3、HDCP（如使用主路由DHCP，请关闭此处DHCP，同一网络内有且仅有1个DHCP服务）
+4、IPv6（按需开关，如有IPv4公网地区，可以完全关闭v6避免不必要的麻烦）
+保存并应用
+
+其他功能插件请按需设置。
+
+完工
+
+
+
+
+
+
+
+
+
