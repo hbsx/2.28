@@ -1,34 +1,34 @@
-OpenWRT³£¹æimg.gz×ª»¯ÎªPVE LXC CTÄ£°ærootfs.tar.gz¼°¼òµ¥°²×°
+OpenWRTå¸¸è§„img.gzè½¬åŒ–ä¸ºPVE LXC CTæ¨¡ç‰ˆrootfs.tar.gzåŠç®€å•å®‰è£…
 
 wget https://fw0.koolcenter.com/iStoreOS/x86_64_efi/istoreos-21.02.3-2023051217-x86-64-squashfs-combined-efi.img.gz
 
-½âÑ¹Ëõ
+è§£å‹ç¼©
 gzip -d istoreos-21.02.3-2023051217-x86-64-squashfs-combined-efi.img.gz
 
-ÖØÃüÃû
+é‡å‘½å
 mv istoreos-21.02.3-2023051217-x86-64-squashfs-combined-efi.img istoreos.img
 
-1¡¢¹ÒÔØimg
+1ã€æŒ‚è½½img
 modprobe nbd
 qemu-nbd -c /dev/nbd0 -f raw istoreos.img
 
-2¡¢½¨Á¢ÎÄ¼ş¼Ğ
+2ã€å»ºç«‹æ–‡ä»¶å¤¹
 
 mkdir /mnt/openwrt
-3¡¢²é¿´¹ÒÔØµÄnbd0
+3ã€æŸ¥çœ‹æŒ‚è½½çš„nbd0
 
 lsblk -f /dev/nbd0
-4¡¢¹ÒÔØ·ÖÇø
+4ã€æŒ‚è½½åˆ†åŒº
 
 mount /dev/nbd0p2 /mnt/openwrt
 cd /mnt/openwrt && ls
-5¡¢´ò°ü³Érootfs.tar.gzÎÄ¼ş
+5ã€æ‰“åŒ…æˆrootfs.tar.gzæ–‡ä»¶
 
 tar -czvf /var/lib/vz/template/cache/openwrt.rootfs.tar.gz *
-6¡¢²é¿´/var/lib/vz/template/cache/ÎÄ¼ş¼ĞÖĞÊÇ·ñÉú³É´ËÎÄ¼ş
+6ã€æŸ¥çœ‹/var/lib/vz/template/cache/æ–‡ä»¶å¤¹ä¸­æ˜¯å¦ç”Ÿæˆæ­¤æ–‡ä»¶
 
 ls /var/lib/vz/template/cache/openwrt.rootfs.tar.gz
-7¡¢Ğ¶ÔØ¹ÒÔØ
+7ã€å¸è½½æŒ‚è½½
 
 cd ..
  
@@ -37,56 +37,76 @@ umount /mnt/openwrt/
 qemu-nbd -d /dev/nbd0
 
 
-¶ş¡¢°²×°£º
+äºŒã€å®‰è£…ï¼š
 
 pct create 103 local:vztmpl/istoreos.rootfs.tar.gz --rootfs local-lvm:1 --ostype unmanaged --hostname Openwrt-LXC --arch amd64 --cores 1 --memory 512 --swap 0 -net0 bridge=vmbr0,name=eth0
 
-½âÊÍ£º
-pct create£ºÈİÆ÷´´½¨ÃüÁî
-110£ºÈİÆ÷ID£¬¿É¸ù¾İ×Ô¼ºÇé¿öÉè¶¨
-local:vztmpl/openwrt-x86-64-generic-ext4-rootfs.tar.gz£º ÉÏ´«/ÏÂÔØµ½local¡ªCTÄ£°åÖĞµÄOP¹Ì¼şÈ«Ãû
---rootfs£ºÄ£°æÎªrootfsÎÄ¼ş
-local-lvm:1 £ºÄ£°å°²×°ºó´ÅÅÌ¾µÏñËùÔÚ£¨²¿·ÖĞ¡»ï°é¿ÉÄÜÖ»ÓĞ1¸ölocalÃ»ÓĞlocal-lvm£¬×¢ÒâÓÃlocal£©£¬Ã°ºÅºóÊı×Ö´ú±í·ÖÅä´ÅÅÌ´óĞ¡£¨µ¥Î»G£©°´ĞèÉèÖÃ£¬1Îª1G£¬2Îª2G
---ostype unmanaged£º²Ù×÷ÏµÍ³ÀàĞÍ£¬ÕâÀïÃ»ÓĞÌîĞ´Ö¸¶¨µÄ²Ù×÷ÏµÍ³£¨²»»áÓ°Ïì£©
---hostname Openwrt-LXC£ºÖ÷»úÃû£¨ÈİÆ÷Ãû³Æ£©¿É×Ô¶¨Òå¡£
---arch amd64£ºÉèÖÃÎª64Î»
---cores 1£º·ÖÅä¸øÈİÆ÷µÄºËĞÄÊı£¬1£º1ºË£¬2£º2ºËµÈµÈ£¨°´ĞèÉèÖÃ£©
---memory 512£º·ÖÅä¸øÈİÆ÷×î´óµÄÄÚ´æÊıÁ¿£¨µ¥Î»M£©£¨°´ĞèÉèÖÃ£©
---swap 0£º½»»»·ÖÇøÉèÖÃÎª0£¨°´ĞèÉèÖÃ£©
--net0 bridge=vmbr0,name=eth0£ºÍø¿¨£¬ÉÏÇÅ½ÓPVEÄ¬ÈÏĞéÄâÍøÇÅvmbr0£¬Ãû³Æeth0¡£±ØĞë£¬·ñÔòopÎŞ·¨ÁªÍø¡£
+è§£é‡Šï¼š
+pct createï¼šå®¹å™¨åˆ›å»ºå‘½ä»¤
+110ï¼šå®¹å™¨IDï¼Œå¯æ ¹æ®è‡ªå·±æƒ…å†µè®¾å®š
+local:vztmpl/openwrt-x86-64-generic-ext4-rootfs.tar.gzï¼š ä¸Šä¼ /ä¸‹è½½åˆ°localâ€”CTæ¨¡æ¿ä¸­çš„OPå›ºä»¶å…¨å
+--rootfsï¼šæ¨¡ç‰ˆä¸ºrootfsæ–‡ä»¶
+local-lvm:1 ï¼šæ¨¡æ¿å®‰è£…åç£ç›˜é•œåƒæ‰€åœ¨ï¼ˆéƒ¨åˆ†å°ä¼™ä¼´å¯èƒ½åªæœ‰1ä¸ªlocalæ²¡æœ‰local-lvmï¼Œæ³¨æ„ç”¨localï¼‰ï¼Œå†’å·åæ•°å­—ä»£è¡¨åˆ†é…ç£ç›˜å¤§å°ï¼ˆå•ä½Gï¼‰æŒ‰éœ€è®¾ç½®ï¼Œ1ä¸º1Gï¼Œ2ä¸º2G
+--ostype unmanagedï¼šæ“ä½œç³»ç»Ÿç±»å‹ï¼Œè¿™é‡Œæ²¡æœ‰å¡«å†™æŒ‡å®šçš„æ“ä½œç³»ç»Ÿï¼ˆä¸ä¼šå½±å“ï¼‰
+--hostname Openwrt-LXCï¼šä¸»æœºåï¼ˆå®¹å™¨åç§°ï¼‰å¯è‡ªå®šä¹‰ã€‚
+--arch amd64ï¼šè®¾ç½®ä¸º64ä½
+--cores 1ï¼šåˆ†é…ç»™å®¹å™¨çš„æ ¸å¿ƒæ•°ï¼Œ1ï¼š1æ ¸ï¼Œ2ï¼š2æ ¸ç­‰ç­‰ï¼ˆæŒ‰éœ€è®¾ç½®ï¼‰
+--memory 512ï¼šåˆ†é…ç»™å®¹å™¨æœ€å¤§çš„å†…å­˜æ•°é‡ï¼ˆå•ä½Mï¼‰ï¼ˆæŒ‰éœ€è®¾ç½®ï¼‰
+--swap 0ï¼šäº¤æ¢åˆ†åŒºè®¾ç½®ä¸º0ï¼ˆæŒ‰éœ€è®¾ç½®ï¼‰
+-net0 bridge=vmbr0,name=eth0ï¼šç½‘å¡ï¼Œä¸Šæ¡¥æ¥PVEé»˜è®¤è™šæ‹Ÿç½‘æ¡¥vmbr0ï¼Œåç§°eth0ã€‚å¿…é¡»ï¼Œå¦åˆ™opæ— æ³•è”ç½‘ã€‚
 
 
-¶ş¡¢ÉèÖÃ
+äºŒã€è®¾ç½®
 
-×÷ÎªÅÔÂ·ÓÉÊ¹ÓÃµÄÈİÆ÷ÉèÖÃ£º
-nano /etc/pve/lxc/£¨ÈİÆ÷ID£©.conf
-½øÈë×îÏÂÃæÌí¼ÓÈçÏÂ£¨tunÉè±¸Ó³Éä£¬Ó°Ïìµ½ÈçZTµÈÊ¹ÓÃtunµÄ²å¼ş£©£º
+ä½œä¸ºæ—è·¯ç”±ä½¿ç”¨çš„å®¹å™¨è®¾ç½®ï¼š
+nano /etc/pve/lxc/ï¼ˆå®¹å™¨IDï¼‰.conf
+è¿›å…¥æœ€ä¸‹é¢æ·»åŠ å¦‚ä¸‹ï¼ˆtunè®¾å¤‡æ˜ å°„ï¼Œå½±å“åˆ°å¦‚ZTç­‰ä½¿ç”¨tunçš„æ’ä»¶ï¼‰ï¼š
 
 lxc.cgroup2.devices.allow: c 10:200 rwm
 lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
 
-Èı¡¢³õÊ¼»¯
 
-Æô¶¯OP-LXCÈİÆ÷
+
+
+features: keyctl=1,mknod=1,nesting=1
+lxc.apparmor.profile: unconfined
+lxc.include: /usr/share/lxc/config/openwrt.common.conf
+lxc.cgroup2.devices.allow: a
+lxc.cap.drop:
+lxc.mount.auto: proc:mixed sys:ro cgroup:mixed
+lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
+
+
+
+
+
+
+
+
+
+
+ä¸‰ã€åˆå§‹åŒ–
+
+å¯åŠ¨OP-LXCå®¹å™¨
 
 vi /etc/config/network
-µãi½øÈë±à¼­Ä£Ê½
-ĞŞ¸ÄIP
-µãESC¡ª¡ªÓ¢ÎÄÃ°ºÅ:wq »Ø³µ±£´æÍË³ö
+ç‚¹iè¿›å…¥ç¼–è¾‘æ¨¡å¼
+ä¿®æ”¹IP
+ç‚¹ESCâ€”â€”è‹±æ–‡å†’å·:wq å›è½¦ä¿å­˜é€€å‡º
 
 
-ä¯ÀÀÆ÷ÖĞÊäÈëOP-LXCµÄIP µÇÂ¼WebUIºó
+æµè§ˆå™¨ä¸­è¾“å…¥OP-LXCçš„IP ç™»å½•WebUIå
 
-³õÊ¼»¯ÍøÂç½Ó¿Ú
-1¡¢Íø¹Ø£¨Ö÷Â·ÓÉ£©
-2¡¢DNS£¨Ö÷/±¸2¸ö½ÏºÃ£©
-3¡¢HDCP£¨ÈçÊ¹ÓÃÖ÷Â·ÓÉDHCP£¬Çë¹Ø±Õ´Ë´¦DHCP£¬Í¬Ò»ÍøÂçÄÚÓĞÇÒ½öÓĞ1¸öDHCP·şÎñ£©
-4¡¢IPv6£¨°´Ğè¿ª¹Ø£¬ÈçÓĞIPv4¹«ÍøµØÇø£¬¿ÉÒÔÍêÈ«¹Ø±Õv6±ÜÃâ²»±ØÒªµÄÂé·³£©
-±£´æ²¢Ó¦ÓÃ
+åˆå§‹åŒ–ç½‘ç»œæ¥å£
+1ã€ç½‘å…³ï¼ˆä¸»è·¯ç”±ï¼‰
+2ã€DNSï¼ˆä¸»/å¤‡2ä¸ªè¾ƒå¥½ï¼‰
+3ã€HDCPï¼ˆå¦‚ä½¿ç”¨ä¸»è·¯ç”±DHCPï¼Œè¯·å…³é—­æ­¤å¤„DHCPï¼ŒåŒä¸€ç½‘ç»œå†…æœ‰ä¸”ä»…æœ‰1ä¸ªDHCPæœåŠ¡ï¼‰
+4ã€IPv6ï¼ˆæŒ‰éœ€å¼€å…³ï¼Œå¦‚æœ‰IPv4å…¬ç½‘åœ°åŒºï¼Œå¯ä»¥å®Œå…¨å…³é—­v6é¿å…ä¸å¿…è¦çš„éº»çƒ¦ï¼‰
+ä¿å­˜å¹¶åº”ç”¨
 
-ÆäËû¹¦ÄÜ²å¼şÇë°´ĞèÉèÖÃ¡£
+å…¶ä»–åŠŸèƒ½æ’ä»¶è¯·æŒ‰éœ€è®¾ç½®ã€‚
 
-Íê¹¤
+å®Œå·¥
 
 
 
