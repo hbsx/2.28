@@ -4,6 +4,31 @@ sed -i 's/^.*PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/ssh
 service ssh restart
 
 
+lxc 创建ct容器
+
+lxc.apparmor.profile: unconfined   # 表示容器内的进程将不受任何 AppArmor 限制
+lxc.mount.auto: cgroup:rw
+lxc.mount.auto: proc:rw
+lxc.mount.auto: sys:rw
+lxc.cap.drop:   # 用于指定容器内进程的能力限制，允许进程执行一些特定的操作，例如修改系统时间、挂载文件系统等
+lxc.cgroup.devices.allow: a
+
+root@docker:~# date 
+Sun Mar 24 07:04:09 UTC 2024
+root@docker:~# date -R
+Sun, 24 Mar 2024 07:04:11 +0000
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 上传文件路径
