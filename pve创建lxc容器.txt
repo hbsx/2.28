@@ -20,9 +20,20 @@ Sun, 24 Mar 2024 07:04:11 +0000
 
 
 
+安装 Docker（非大陆服务器）
 
+wget -qO- get.docker.com | bash
 
+docker -v  #查看 docker 版本
+systemctl enable docker     # 设置开机自动启动
 
+安装 Docker-compose（非大陆服务器）
+
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose --version  #查看 docker-compose 版本
 
 
 
