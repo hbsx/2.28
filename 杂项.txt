@@ -15,6 +15,21 @@ docker run -d --name sing-box-subscribe --restart always -p 5000:5000 jwy8645/si
 
 
 
+sublinkx
+
+docker run --name sublinkx -p 8000:8000 \
+-v $PWD/db:/app/db \
+-v $PWD/template:/app/template \
+-v $PWD/logs:/app/logs \
+-d --restart always jaaksi/sublinkx
+
+
+
+
+
+
+
+
 
 X-UI 安装
 apt update -y                                    # Debian/Ubuntu 命令
