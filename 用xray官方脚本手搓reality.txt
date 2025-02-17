@@ -1,0 +1,129 @@
+用xray官方脚本手搓reality
+
+1 安装xray
+apt update && apt upgrade -y
+apt install curl wget sudo -y
+
+用官方脚本直接装
+
+https://github.com/XTLS/Xray-install
+
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+
+装完更新下geoip
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install-geodata
+
+2 设置配置文件
+搭建的是VLESS-TCP-XTLS-Vision-REALITY。模板来源如下
+
+https://github.com/XTLS/Xray-examples/blob/main/VLESS-TCP-XTLS-Vision-REALITY/config_server.jsonc
+
+用winscp，打开/usr/local/etc/xray 下的config.json ，清空
+
+下面几个参数要修改
+
+①port 改成高位端口
+
+②id的话就是uuid，用xray uuid生成
+
+③dest和serverNames的话我一直都是itunes.apple.com的，
+
+可以换成TLSv1.3、X25519 与 H2的网站，记得别用cloudflare和cloudfront的网站
+
+④privateKey的话用 xray x25519 生产
+
+privateKey用在服务器上，public Key用在客户端上
+
+⑤ shortIds的用openssl rand -hex 8生成
+
+{
+    "log": {
+        "loglevel": "debug"
+    },
+    "inbounds": [
+        {
+            "port": 25443, 
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "4ea76577-d685-4776-bf01-4582013fe1ca",
+                        "flow": "xtls-rprx-vision"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "reality",
+                "realitySettings": {
+                    "dest": "itunes.apple.com:443",
+                    "serverNames": [
+                        "itunes.apple.com"
+                    ],
+                    "privateKey": "qM5GQf-C69MV7PKLN8ywNTUZxS8xVioZHCyu0rmVHU8",
+                    "shortIds": [
+                        "0a0324f6f265dce2"
+                    ]
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ],
+                "routeOnly": true
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom",
+            "tag": "direct"
+        }
+    ]
+}
+
+
+
+
+
+3 启动服务
+重启xray
+systemctl restart xray
+
+查看xray状态,active (running)就是好了
+
+systemctl status xray 
+
+xray开机自启
+
+systemctl enable xray
+
+v2rayn
+如图，自己手动导入下
+
+参数自己替换下
+
+ip 1.1.1.1换成你自己vps的ip
+
+端口换成你上面自己的端口
+
+public key的话用上面生成的，要和private key对应的
+
+uuid和short id也是换成自己生成的
+
+
+https://tuchuang.037210.xyz/file/AgACAgEAAx0Ed7FCEQAC0DJnsopumlgGS3C0r5ewgs4GVAK3YwACTq4xG1hkkUVnlRNLGkRo0AEAAwIAA3cAAzYE.png
+
+
+clash
+clash的参数如下
+
+server的话换成你自己的vps的ip
+
+其他参数也是替换下就ok，public key还是要和private key对应的
+
+  - {name: reality, server: 1.1.1.1, port: 25443, reality-opts: {public-key:  _tksEunTbjkGkW6ixSkF0Zh51w3PPT3HZjS7n7QJqAo, short-id: 0a0324f6f265dce2}, client-fingerprint: chrome, type: vless, uuid: 4ea76577-d685-4776-bf01-4582013fe1ca, tls: true, tfo: false, servername: itunes.apple.com, flow: xtls-rprx-vision, skip-cert-verify: true, udp: true}
